@@ -1,197 +1,210 @@
-import 'dart:convert';
-
-T? asT<T>(dynamic value) {
-  if (value is T) {
-    return value;
-  }
-  return null;
-}
-
-class SubCategoryModel {
-  SubCategoryModel({
-    this.status,
-    this.message,
-    this.result,
+class SubCategoryModelResponse {
+  SubCategoryModelResponse({
+    required this.status,
+    required this.message,
+    required this.result,
   });
 
-  factory SubCategoryModel.fromJson(Map<String, dynamic> json) =>
-      SubCategoryModel(
-        status: asT<int?>(json['Status']),
-        message: asT<String?>(json['Message']),
-        result: json['Result'] == null
-            ? null
-            : Result.fromJson(asT<Map<String, dynamic>>(json['Result'])!),
-      );
+  final int? status;
+  final String? message;
+  final Result? result;
 
-  int? status;
-  String? message;
-  Result? result;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
+  SubCategoryModelResponse copyWith({
+    int? status,
+    String? message,
+    Result? result,
+  }) {
+    return SubCategoryModelResponse(
+      status: status ?? this.status,
+      message: message ?? this.message,
+      result: result ?? this.result,
+    );
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'Status': status,
-        'Message': message,
-        'Result': result,
+  factory SubCategoryModelResponse.fromJson(Map<String, dynamic> json) {
+    return SubCategoryModelResponse(
+      status: json["Status"],
+      message: json["Message"],
+      result: json["Result"] == null ? null : Result.fromJson(json["Result"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "Status": status,
+        "Message": message,
+        "Result": result?.toJson(),
       };
 }
 
 class Result {
   Result({
-    this.category,
+    required this.category,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    final List<Category>? category =
-        json['Category'] is List ? <Category>[] : null;
-    if (category != null) {
-      for (final dynamic item in json['Category']!) {
-        if (item != null) {
-          category.add(Category.fromJson(asT<Map<String, dynamic>>(item)!));
-        }
-      }
-    }
+  final List<Category> category;
+
+  Result copyWith({
+    List<Category>? category,
+  }) {
     return Result(
-      category: category,
+      category: category ?? this.category,
     );
   }
 
-  List<Category>? category;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
+  factory Result.fromJson(Map<String, dynamic> json) {
+    return Result(
+      category: json["Category"] == null
+          ? []
+          : List<Category>.from(
+              json["Category"]!.map((x) => Category.fromJson(x))),
+    );
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'Category': category,
+  Map<String, dynamic> toJson() => {
+        "Category": category.map((x) => x?.toJson()).toList(),
       };
 }
 
 class Category {
   Category({
-    this.id,
-    this.name,
-    this.isAuthorize,
-    this.update080819,
-    this.update130919,
-    this.subCategories,
+    required this.id,
+    required this.name,
+    required this.isAuthorize,
+    required this.update080819,
+    required this.update130919,
+    required this.subCategories,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    final List<SubCategories>? subCategories =
-        json['SubCategories'] is List ? <SubCategories>[] : null;
-    if (subCategories != null) {
-      for (final dynamic item in json['SubCategories']!) {
-        if (item != null) {
-          subCategories
-              .add(SubCategories.fromJson(asT<Map<String, dynamic>>(item)!));
-        }
-      }
-    }
+  final int? id;
+  final String? name;
+  final int? isAuthorize;
+  final int? update080819;
+  final int? update130919;
+  final List<SubCategory> subCategories;
+
+  Category copyWith({
+    int? id,
+    String? name,
+    int? isAuthorize,
+    int? update080819,
+    int? update130919,
+    List<SubCategory>? subCategories,
+  }) {
     return Category(
-      id: asT<int?>(json['Id']),
-      name: asT<String?>(json['Name']),
-      isAuthorize: asT<int?>(json['IsAuthorize']),
-      update080819: asT<int?>(json['Update080819']),
-      update130919: asT<int?>(json['Update130919']),
-      subCategories: subCategories,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      isAuthorize: isAuthorize ?? this.isAuthorize,
+      update080819: update080819 ?? this.update080819,
+      update130919: update130919 ?? this.update130919,
+      subCategories: subCategories ?? this.subCategories,
     );
   }
 
-  int? id;
-  String? name;
-  int? isAuthorize;
-  int? update080819;
-  int? update130919;
-  List<SubCategories>? subCategories;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json["Id"],
+      name: json["Name"],
+      isAuthorize: json["IsAuthorize"],
+      update080819: json["Update080819"],
+      update130919: json["Update130919"],
+      subCategories: json["SubCategories"] == null
+          ? []
+          : List<SubCategory>.from(
+              json["SubCategories"]!.map((x) => SubCategory.fromJson(x))),
+    );
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'Id': id,
-        'Name': name,
-        'IsAuthorize': isAuthorize,
-        'Update080819': update080819,
-        'Update130919': update130919,
-        'SubCategories': subCategories,
+  Map<String, dynamic> toJson() => {
+        "Id": id,
+        "Name": name,
+        "IsAuthorize": isAuthorize,
+        "Update080819": update080819,
+        "Update130919": update130919,
+        "SubCategories": subCategories.map((x) => x?.toJson()).toList(),
       };
 }
 
-class SubCategories {
-  SubCategories({
-    this.id,
-    this.name,
-    this.product,
+class SubCategory {
+  SubCategory({
+    required this.id,
+    required this.name,
+    required this.product,
   });
 
-  factory SubCategories.fromJson(Map<String, dynamic> json) {
-    final List<Product>? product = json['Product'] is List ? <Product>[] : null;
-    if (product != null) {
-      for (final dynamic item in json['Product']!) {
-        if (item != null) {
-          product.add(Product.fromJson(asT<Map<String, dynamic>>(item)!));
-        }
-      }
-    }
-    return SubCategories(
-      id: asT<int?>(json['Id']),
-      name: asT<String?>(json['Name']),
-      product: product,
+  final int? id;
+  final String? name;
+  final List<Product> product;
+
+  SubCategory copyWith({
+    int? id,
+    String? name,
+    List<Product>? product,
+  }) {
+    return SubCategory(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      product: product ?? this.product,
     );
   }
 
-  int? id;
-  String? name;
-  List<Product>? product;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
+  factory SubCategory.fromJson(Map<String, dynamic> json) {
+    return SubCategory(
+      id: json["Id"],
+      name: json["Name"],
+      product: json["Product"] == null
+          ? []
+          : List<Product>.from(
+              json["Product"]!.map((x) => Product.fromJson(x))),
+    );
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'Id': id,
-        'Name': name,
-        'Product': product,
+  Map<String, dynamic> toJson() => {
+        "Id": id,
+        "Name": name,
+        "Product": product.map((x) => x?.toJson()).toList(),
       };
 }
 
 class Product {
   Product({
-    this.name,
-    this.priceCode,
-    this.imageName,
-    this.id,
+    required this.name,
+    required this.priceCode,
+    required this.imageName,
+    required this.id,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        name: asT<String?>(json['Name']),
-        priceCode: asT<String?>(json['PriceCode']),
-        imageName: asT<String?>(json['ImageName']),
-        id: asT<int?>(json['Id']),
-      );
+  final String? name;
+  final String? priceCode;
+  final String? imageName;
+  final int? id;
 
-  String? name;
-  String? priceCode;
-  String? imageName;
-  int? id;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
+  Product copyWith({
+    String? name,
+    String? priceCode,
+    String? imageName,
+    int? id,
+  }) {
+    return Product(
+      name: name ?? this.name,
+      priceCode: priceCode ?? this.priceCode,
+      imageName: imageName ?? this.imageName,
+      id: id ?? this.id,
+    );
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'Name': name,
-        'PriceCode': priceCode,
-        'ImageName': imageName,
-        'Id': id,
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      name: json["Name"],
+      priceCode: json["PriceCode"],
+      imageName: json["ImageName"],
+      id: json["Id"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "Name": name,
+        "PriceCode": priceCode,
+        "ImageName": imageName,
+        "Id": id,
       };
 }

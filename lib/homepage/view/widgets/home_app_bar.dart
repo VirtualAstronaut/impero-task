@@ -17,11 +17,17 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: onFilterTap,
-          icon: const Icon(Icons.filter_alt_outlined),
+          icon: const Icon(
+            Icons.filter_alt_outlined,
+            color: Colors.white,
+          ),
         ),
         IconButton(
           onPressed: onSearchIcon,
-          icon: const Icon(Icons.filter_alt_outlined),
+          icon: const Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
         )
       ],
       bottom: PreferredSize(
@@ -54,7 +60,7 @@ class _Titles extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(
-        right: 8.0,
+        right: 16.0,
       ),
       child: Text(
         text,
