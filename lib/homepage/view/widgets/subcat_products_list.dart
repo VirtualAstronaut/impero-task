@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:impero_task/homepage/bloc/home_page_bloc.dart';
 
 import 'package:impero_task/homepage/models/subcategory_model.dart';
 
@@ -15,11 +17,17 @@ class _SubCatProductsListState extends State<SubCatProductsList>
   ScrollController controller = ScrollController();
   bool initialCall = true;
 
-  // void blocked() {
-  //   final bloc = context.read<HomePageBloc>();
-  //   bloc.add(HomeDataPaginatedFetched(widget.category));
-  //   initialCall = false;
-  // }
+  @override
+  void initState() {
+    blocked();
+    super.initState();
+  }
+
+  void blocked() {
+    final bloc = context.read<HomePageBloc>();
+    bloc.add(HomeDataPaginatedFetched(widget.category));
+    initialCall = false;
+  }
 
   // void paginationController() {
   //   final bloc = context.read<HomePageBloc>();

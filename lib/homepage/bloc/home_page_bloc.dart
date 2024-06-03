@@ -49,7 +49,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         final updatedData = response.copyWith(
           result: response.result?.copyWith(
             category: [
-              ...?data.subCategorydata.result?.category,
               ...?response.result?.category,
             ],
           ),
